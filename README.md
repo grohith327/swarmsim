@@ -14,7 +14,7 @@ To compile Swarmsim, FLTK and OpenGL (e.g., freeglut) libraries are needed. It s
 
 # Performance.
 
-Swarmsim provides around a 30-50x speedup when simulating 1000 robots without the GUI, and about 4-6x speedup when showing the GUI.
+Swarmsim provides around a 30-50x speedup w.r.t. realtime when simulating 1000 robots without the GUI, and about 4-6x speedup when showing the GUI (on MacBook Pro 2011 2.6 GHz Intel Core i7 with an NVIDIA GeForce GT 650M).
 
 # Get started.
 
