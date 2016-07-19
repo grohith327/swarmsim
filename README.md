@@ -37,3 +37,25 @@ make
 ./swarmsim --timestep=0.05 --nogui --duration=60
 ./swarmsim --default_supervisor_nrobots=20
 ```
+
+# Creating your own robot controller
+
+1. Copy the template_ground_robot.[cc|h] in the user_plugin folder.
+2. Copy the template_supervisor.[cc|h].
+3. Change the class names and registeration names. Update the code.
+4. Recompile.
+5. You can then run your controller in swarmsim by setting the --supervisor flag.
+
+```bash
+cd user_plugin
+cp template_ground_robot.cc my_ground_robot.cc
+cp template_ground_robot.h my_ground_robot.h
+cp template_supervisor.cc my_supervisor.cc
+cp template_supervisor.h my_supervisor.h
+
+# Edit the files.
+# You can find examples of ground and flying robot code in plugin/default_* files.
+
+make
+./swarmsim --supervisor=MySupervisor
+```

@@ -14,6 +14,9 @@ SIM_SOURCES = display/window.cc display/texture_manager.cc display/model_3ds.cc 
               core/supervisor.cc core/robot.cc core/ground_robot.cc core/flying_robot.cc \
               plugin/default_supervisor.cc plugin/default_ground_robot.cc plugin/default_flying_robot.cc
 
+# User defined code.
+USER_SOURCES = $(wildcard user_plugin/*.cc)
+
 ifndef OSTYPE
   OSTYPE = $(shell uname -s|awk '{print tolower($$0)}')
 endif
@@ -39,10 +42,10 @@ else
   LIBS += -framework GLUT -framework OpenGL -framework Carbon -lfltk -lfltk_gl
 endif
 
-OBJECTS = $(SIM_SOURCES:.cc=.o) $(ANN_SOURCES:.cpp=.o) $(GFLAGS_SOURCES:.cc=.o)
+OBJECTS = $(USER_SOURCES:.cc=.o) $(SIM_SOURCES:.cc=.o) $(ANN_SOURCES:.cpp=.o) $(GFLAGS_SOURCES:.cc=.o)
 LDFLAGS = $(LIBS)
 
-all: $(SOURCES) $(SIM_SOURCES) swarmsim
+all: swarmsim
 
 swarmsim:  $(OBJECTS)
 	$(CC) $(OBJECTS) $(LIBRARIES) -o $@ $(LDFLAGS)
