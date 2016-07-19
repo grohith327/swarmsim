@@ -42,7 +42,7 @@ make
 
 1. Copy the template_ground_robot.[cc|h] in the user_plugin folder.
 2. Copy the template_supervisor.[cc|h].
-3. Change the class names and registeration names. Update the code.
+3. Change the class names and registration names. Update the code.
 4. Recompile.
 5. You can then run your controller in swarmsim by setting the --supervisor flag.
 
