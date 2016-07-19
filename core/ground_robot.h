@@ -1,6 +1,8 @@
 #ifndef _GROUND_ROBOT_H
 #define _GROUND_ROBOT_H
 
+#include <memory>
+
 #include "display/model_3ds.h"
 #include "display/window.h"
 #include "robot.h"

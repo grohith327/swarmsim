@@ -1,6 +1,7 @@
 #ifndef _ROBOT_H
 #define _ROBOT_H
 
+#include <tuple>
 #include <vector>
 
 #include "display/window.h"

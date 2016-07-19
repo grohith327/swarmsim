@@ -18,12 +18,18 @@ ifndef OSTYPE
   OSTYPE = $(shell uname -s|awk '{print tolower($$0)}')
 endif
 
-CC = clang++ -std=c++11 -stdlib=libc++
+HAS_CLANG := $(shell command -v clang++ 2> /dev/null)
+ifdef HAS_CLANG
+  CC = clang++ -std=c++11 -stdlib=libc++
+else
+  CC = g++ -std=c++11
+endif
+
 CFLAGS = -O3 -Wall -I. -Wno-unused-function -fno-strict-aliasing -Wno-write-strings -DUSE_GL -ffast-math -funroll-loops -Wno-unused-const-variable -Wno-deprecated-register
 ifeq ($(OSTYPE), darwin)
   CFLAGS += -DMAC -I/sw/include -I/opt/local/include -Wno-deprecated-declarations
 else
-  CFLAGS += -Wno-unused-result # Apparently not recognized by cc1plus of MACOS
+  CFLAGS += -Wno-unused-result -Wno-sign-compare -Wno-conversion-null # Apparently not recognized by cc1plus of MACOS
 endif
 
 LIBS = -lm -lpthread
