@@ -18,6 +18,10 @@ xcode-select --install
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 # Install FLTK (OpenGL should be installed with XCode).
 brew install fltk --devel
+
+# For Linux.
+sudo apt-get install libfltk1.3-dev freeglut3-dev
+sudo apt-get install build-essentials  # For make.
 ```
 
 # Performance.
