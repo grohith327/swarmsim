@@ -555,7 +555,7 @@ void Model3DS::MaterialNameChunkProcessor(long length, long findex, int matindex
       Materials[matindex].name[i] = fgetc(bin3ds);
       if (Materials[matindex].name[i] == 0)
         {
-          Materials[matindex].name[i] = NULL;
+          Materials[matindex].name[i] = '\0';
           break;
         }
     }
@@ -707,7 +707,7 @@ void Model3DS::MapNameChunkProcessor(long length, long findex, int matindex)
       name[i] = fgetc(bin3ds);
       if (name[i] == 0)
         {
-          name[i] = NULL;
+          name[i] = '\0';
           break;
         }
     }
@@ -739,7 +739,7 @@ void Model3DS::ObjectChunkProcessor(long length, long findex, int objindex)
       Objects[objindex].name[i] = fgetc(bin3ds);
       if (Objects[objindex].name[i] == 0)
         {
-          Objects[objindex].name[i] = NULL;
+          Objects[objindex].name[i] = '\0';
           break;
         }
     }
@@ -1059,7 +1059,7 @@ void Model3DS::FacesMaterialsListChunkProcessor(long length, long findex, int ob
       name[i] = fgetc(bin3ds);
       if (name[i] == 0)
         {
-          name[i] = NULL;
+          name[i] = '\0';
           break;
         }
     }

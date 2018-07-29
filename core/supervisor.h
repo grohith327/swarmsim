@@ -41,6 +41,9 @@ class Supervisor {
   // Private function to initialize the robots.
   virtual bool Initialize() = 0;
 
+  // Private function to destroy the robots.
+  virtual void Destroy() {}
+
   // Draws some extra info on the screen.
   // The window can be used to move the camera around.
   virtual void Draw(double t, VisualizerWindow* window) {}

@@ -12,7 +12,8 @@ GFLAGS_SOURCES = gflags/gflags.cc gflags/gflags_completions.cc gflags/gflags_rep
 SIM_SOURCES = display/window.cc display/texture_manager.cc display/model_3ds.cc \
               main/swarmsim.cc util/utils.cc \
               core/supervisor.cc core/robot.cc core/ground_robot.cc core/flying_robot.cc \
-              plugin/default_supervisor.cc plugin/default_ground_robot.cc plugin/default_flying_robot.cc
+              plugin/default_supervisor.cc plugin/default_ground_robot.cc plugin/default_flying_robot.cc \
+              plugin/python_supervisor.cc plugin/python_ground_robot.cc
 
 # User defined code.
 USER_SOURCES = $(wildcard user_plugin/*.cc)
@@ -29,6 +30,7 @@ else
 endif
 
 CFLAGS = -O3 -Wall -I. -Wno-unused-function -fno-strict-aliasing -Wno-write-strings -DUSE_GL -ffast-math -funroll-loops -Wno-unused-const-variable -Wno-deprecated-register
+CFLAGS += `python-config --includes`
 ifeq ($(OSTYPE), darwin)
   CFLAGS += -DMAC -I/sw/include -I/opt/local/include -Wno-deprecated-declarations
 else
@@ -43,7 +45,7 @@ else
 endif
 
 OBJECTS = $(USER_SOURCES:.cc=.o) $(SIM_SOURCES:.cc=.o) $(ANN_SOURCES:.cpp=.o) $(GFLAGS_SOURCES:.cc=.o)
-LDFLAGS = $(LIBS)
+LDFLAGS = $(LIBS) `python-config --ldflags`
 
 all: swarmsim
 

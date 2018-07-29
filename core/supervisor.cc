@@ -45,6 +45,7 @@ bool Supervisor::Init() {
 }
 
 void Supervisor::Close() {
+  Destroy();
   annClose();
 }
 
