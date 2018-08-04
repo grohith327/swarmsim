@@ -1,4 +1,4 @@
-#include "ground_robot.h"
+#include "unicycle.h"
 
 #include <cmath>
 
@@ -26,19 +26,19 @@ constexpr double kGainAvoidanceW = 12.0;
 }  // namespace
 
 // static
-bool GroundRobot::lists_created_ = false;
+bool Unicycle::lists_created_ = false;
 // static
-std::unique_ptr<Model3DS> GroundRobot::model_;
+std::unique_ptr<Model3DS> Unicycle::model_;
 // static
-GLuint GroundRobot::robot_dl_ = 0;
+GLuint Unicycle::robot_dl_ = 0;
 
-GroundRobot::GroundRobot() : u_(0.0), w_(0.0) {}
+Unicycle::Unicycle() : u_(0.0), w_(0.0) {}
 
-bool GroundRobot::Init() {
+bool Unicycle::Init() {
   return Robot::Init();
 }
 
-void GroundRobot::Step(double t, double dt) {
+void Unicycle::Step(double t, double dt) {
   static double avoidance_factor = 1.0 / sqrt(kSafetyDistance) - 1.0 / sqrt(kActiveRegion);
 
   // Update position based on previous control inputs.
@@ -80,17 +80,17 @@ void GroundRobot::Step(double t, double dt) {
   }
 }
 
-void GroundRobot::SetControlInputs(double u, double w) {
+void Unicycle::SetControlInputs(double u, double w) {
   u_ = std::max(std::min(u, kMaxU), -kMaxU);
   w_ = std::max(std::min(w, kMaxW), -kMaxW);
 }
 
-void GroundRobot::SetGoal(double x, double y) {
+void Unicycle::SetGoal(double x, double y) {
   goal_x_ = x;
   goal_y_ = y;
 }
 
-void GroundRobot::Draw(VisualizerWindow* window) {
+void Unicycle::Draw(VisualizerWindow* window) {
   // Reload compiled lists if needed.
   if (!lists_created_ || window->HasContextChanged()) {
     if (lists_created_ && robot_dl_ != 0) {

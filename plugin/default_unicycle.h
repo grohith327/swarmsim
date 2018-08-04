@@ -1,13 +1,13 @@
-#ifndef _DEFAULT_FLYING_ROBOT_H
-#define _DEFAULT_FLYING_ROBOT_H
+#ifndef _DEFAULT_UNICYCLE_H
+#define _DEFAULT_UNICYCLE_H
 
-#include "core/flying_robot.h"
+#include "core/unicycle.h"
 #include "core/robot.h"
 #include "display/window.h"
 #include "util/registerer.h"
 
-class DefaultFlyingRobot : public FlyingRobot {
-  REGISTER("DefaultFlyingRobot", Robot);
+class DefaultUnicycle : public Unicycle {
+  REGISTER("DefaultUnicycle", Robot);
 
  public:
   void Draw(VisualizerWindow* window) override;
@@ -19,7 +19,6 @@ class DefaultFlyingRobot : public FlyingRobot {
 
   double goal_x_;
   double goal_y_;
-  double goal_z_;
 };
 
 #endif

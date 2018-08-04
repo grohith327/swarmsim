@@ -1,5 +1,5 @@
-#ifndef _GROUND_ROBOT_H
-#define _GROUND_ROBOT_H
+#ifndef _QUADROTOR_H
+#define _QUADROTOR_H
 
 #include <memory>
 
@@ -7,9 +7,9 @@
 #include "display/window.h"
 #include "robot.h"
 
-class FlyingRobot : public Robot {
+class Quadrotor : public Robot {
  public:
-  FlyingRobot();
+  Quadrotor();
 
   // Initializes the robots.
   bool Init() final;

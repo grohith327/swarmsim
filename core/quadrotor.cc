@@ -1,4 +1,4 @@
-#include "flying_robot.h"
+#include "quadrotor.h"
 
 #include <cmath>
 #include <iostream>
@@ -6,7 +6,7 @@
 #include "gflags/gflags.h"
 #include "util/utils.h"
 
-DEFINE_bool(flying_robot_axes, false, "Draw target axes if desired.");
+DEFINE_bool(quadrotor_axes, false, "Draw target axes if desired.");
 
 namespace {
 // Drawing constants.
@@ -45,17 +45,17 @@ constexpr double kInertiaZ =   0.2;
 }  // namespace
 
 // static
-bool FlyingRobot::lists_created_ = false;
+bool Quadrotor::lists_created_ = false;
 // static
-std::unique_ptr<Model3DS> FlyingRobot::robot_model_;
+std::unique_ptr<Model3DS> Quadrotor::robot_model_;
 // static
-std::unique_ptr<Model3DS> FlyingRobot::rotor_model_;
+std::unique_ptr<Model3DS> Quadrotor::rotor_model_;
 // static
-GLuint FlyingRobot::robot_dl_ = 0;
+GLuint Quadrotor::robot_dl_ = 0;
 // static
-GLuint FlyingRobot::rotor_dl_ = 0;
+GLuint Quadrotor::rotor_dl_ = 0;
 
-FlyingRobot::FlyingRobot() {
+Quadrotor::Quadrotor() {
   xdot_ = 0.0;
   ydot_ = 0.0;
   zdot_ = 0.0;
@@ -87,11 +87,11 @@ FlyingRobot::FlyingRobot() {
   zbdes_[0] = 0.0; zbdes_[1] = 0.0; zbdes_[2] = 0.0;
 }
 
-bool FlyingRobot::Init() {
+bool Quadrotor::Init() {
   return Robot::Init();
 }
 
-void FlyingRobot::Step(double t, double dt) {
+void Quadrotor::Step(double t, double dt) {
   static double avoidance_factor_z = 1.0 / sqrt(kSafetyZDistance) - 1.0 / sqrt(kActiveZRegion);
 
   // Update position based on previous control inputs.
@@ -414,20 +414,20 @@ void FlyingRobot::Step(double t, double dt) {
   ComputeDesiredRPM();
 }
 
-void FlyingRobot::SetControlInputs(double up_force, double roll_torque, double pitch_torque, double yaw_torque) {
+void Quadrotor::SetControlInputs(double up_force, double roll_torque, double pitch_torque, double yaw_torque) {
   up_force_ = up_force;
   roll_torque_ = roll_torque;
   pitch_torque_ = pitch_torque;
   yaw_torque_ = yaw_torque;
 }
 
-void FlyingRobot::SetGoal(double x, double y, double z) {
+void Quadrotor::SetGoal(double x, double y, double z) {
   goal_x_ = x;
   goal_y_ = y;
   goal_z_ = z;
 }
 
-void FlyingRobot::Draw(VisualizerWindow* window) {
+void Quadrotor::Draw(VisualizerWindow* window) {
   // Reload compiled lists if needed.
   if (!lists_created_ || window->HasContextChanged()) {
     if (lists_created_ && robot_dl_ != 0) {
@@ -482,7 +482,7 @@ void FlyingRobot::Draw(VisualizerWindow* window) {
   glTranslatef(x_, z_, -y_);
 
   // Draw axis
-  if (FLAGS_flying_robot_axes) {
+  if (FLAGS_quadrotor_axes) {
     glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
     glColor3f(1.0, 0.0, 0.0);
@@ -551,7 +551,7 @@ void FlyingRobot::Draw(VisualizerWindow* window) {
   glPopMatrix();
 }
 
-void FlyingRobot::ComputeDesiredRPM() {
+void Quadrotor::ComputeDesiredRPM() {
   // Solving the linear equation.
   w1_desired_ = (kKM * kHalfArmLength * up_force_ - 2.0 * kKM * pitch_torque_ + kKF * kHalfArmLength * yaw_torque_) / (4.0 * kKF * kKM * kHalfArmLength);
   w1_desired_ = std::max(0.0, w1_desired_);

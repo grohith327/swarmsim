@@ -1,5 +1,5 @@
-#ifndef _GROUND_ROBOT_H
-#define _GROUND_ROBOT_H
+#ifndef _UNICYCLE_H
+#define _UNICYCLE_H
 
 #include <memory>
 
@@ -7,9 +7,9 @@
 #include "display/window.h"
 #include "robot.h"
 
-class GroundRobot : public Robot {
+class Unicycle : public Robot {
  public:
-  GroundRobot();
+  Unicycle();
 
   // Initializes the robots.
   bool Init() final;

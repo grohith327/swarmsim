@@ -1,4 +1,4 @@
-#include "default_ground_robot.h"
+#include "default_unicycle.h"
 
 #include <cmath>
 
@@ -9,14 +9,14 @@ constexpr double kDistanceThreshold = 0.2;
 constexpr double kGoalRadius = 0.05;
 }  // namespace
 
-bool DefaultGroundRobot::Initialize() {
+bool DefaultUnicycle::Initialize() {
   // Pick a random goal point .
   goal_x_ = RandomUniform() * 3.0 - 1.5;
   goal_y_ = RandomUniform() * 3.0 - 1.5;
   return true;
 }
 
-void DefaultGroundRobot::Execute(double t, double dt) {
+void DefaultUnicycle::Execute(double t, double dt) {
   double dx = goal_x_ - x();
   double dy = goal_y_ - y();
   double e = sqrtf(dx * dx + dy * dy);
@@ -31,8 +31,8 @@ void DefaultGroundRobot::Execute(double t, double dt) {
   SetGoal(goal_x_, goal_y_);
 }
 
-void DefaultGroundRobot::Draw(VisualizerWindow* window) {
-  GroundRobot::Draw(window);
+void DefaultUnicycle::Draw(VisualizerWindow* window) {
+  Unicycle::Draw(window);
 
   glPushMatrix();
   glTranslatef(goal_x_, 0.0, -goal_y_);

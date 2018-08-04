@@ -1,16 +1,16 @@
-#include "template_ground_robot.h"
+#include "template_unicycle.h"
 
 // Your controller can accept commandline flags.
 // Feel free to add new flags here. E.g.:
 // DEFINE_bool(my_boolean_flag, true, "description");
 
-bool TemplateGroundRobot::Initialize() {
+bool TemplateUnicycle::Initialize() {
   // This function should true upon success.
   // Initialize any variables you need here.
   return true;
 }
 
-void TemplateGroundRobot::Execute(double t, double dt) {
+void TemplateUnicycle::Execute(double t, double dt) {
   // Depending on whether GoalBased() - declared in the header
   // file return, this function should either call SetGoal(x, y) or
   // SetControlInputs(u, w).
@@ -24,8 +24,8 @@ void TemplateGroundRobot::Execute(double t, double dt) {
   // neighbors(), x(), y(), yaw().
 }
 
-void TemplateGroundRobot::Draw(VisualizerWindow* window) {
-  GroundRobot::Draw(window);
+void TemplateUnicycle::Draw(VisualizerWindow* window) {
+  Unicycle::Draw(window);
 
   // Feel free to draw any additional information on screen.
   // Any OpenGL functions should work.

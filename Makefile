@@ -11,9 +11,9 @@ GFLAGS_SOURCES = gflags/gflags.cc gflags/gflags_completions.cc gflags/gflags_rep
 # Simulator sources.
 SIM_SOURCES = display/window.cc display/texture_manager.cc display/model_3ds.cc \
               main/swarmsim.cc util/utils.cc \
-              core/supervisor.cc core/robot.cc core/ground_robot.cc core/flying_robot.cc \
-              plugin/default_supervisor.cc plugin/default_ground_robot.cc plugin/default_flying_robot.cc \
-              plugin/python_supervisor.cc plugin/python_ground_robot.cc
+              core/supervisor.cc core/robot.cc core/unicycle.cc core/quadrotor.cc \
+              plugin/default_supervisor.cc plugin/default_unicycle.cc plugin/default_quadrotor.cc \
+              plugin/python_supervisor.cc plugin/python_unicycle.cc plugin/python_quadrotor.cc
 
 # User defined code.
 USER_SOURCES = $(wildcard user_plugin/*.cc)

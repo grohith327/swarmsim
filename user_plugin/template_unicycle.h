@@ -1,13 +1,13 @@
-#ifndef _TEMPLATE_GROUND_ROBOT_H
-#define _TEMPLATE_GROUND_ROBOT_H
+#ifndef _TEMPLATE_UNICYCLE_H
+#define _TEMPLATE_UNICYCLE_H
 
-#include "core/ground_robot.h"
+#include "core/unicycle.h"
 #include "core/robot.h"
 #include "display/window.h"
 #include "util/registerer.h"
 
-class TemplateGroundRobot : public GroundRobot {
-  REGISTER("TemplateGroundRobot", Robot);
+class TemplateUnicycle : public Unicycle {
+  REGISTER("TemplateUnicycle", Robot);
 
  public:
   void Draw(VisualizerWindow* window) override;

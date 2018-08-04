@@ -1,6 +1,8 @@
 #ifndef _ROBOT_H
 #define _ROBOT_H
 
+#include <Python.h>
+
 #include <tuple>
 #include <vector>
 
@@ -44,11 +46,16 @@ class Robot {
 
   // Notifies derived classes to display some color on the robot.
   void SetColor(const std::tuple<float, float, float>& color);
-  const std::tuple<float, float, float>& color() { return color_; }
+  const std::tuple<float, float, float>& color() const { return color_; }
+
+  // Sets the underlying Python instance.
+  void SetPythonInstance(PyObject* instance);
+  PyObject* python_instance() const;
+  PyObject* ExecutePython(double t, double dt);
 
  private:
-  friend class GroundRobot;
-  friend class FlyingRobot;
+  friend class Unicycle;
+  friend class Quadrotor;
 
   // Private function to initialize the robots.
   virtual bool Initialize() = 0;
@@ -75,6 +82,9 @@ class Robot {
 
   // Drawing.
   std::tuple<float, float, float> color_;
+
+  // Python bindings.
+  PyObject* python_instance_;
 };
 
 #endif

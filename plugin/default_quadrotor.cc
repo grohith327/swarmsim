@@ -1,4 +1,4 @@
-#include "default_flying_robot.h"
+#include "default_quadrotor.h"
 
 #include <cmath>
 #include <iostream>
@@ -10,7 +10,7 @@ constexpr double kDistanceThreshold = 0.2;
 constexpr double kGoalRadius = 0.05;
 }  // namespace
 
-bool DefaultFlyingRobot::Initialize() {
+bool DefaultQuadrotor::Initialize() {
   // Pick a random goal point .
   goal_x_ = RandomUniform() * 3.0 - 1.5;
   goal_y_ = RandomUniform() * 3.0 - 1.5;
@@ -18,7 +18,7 @@ bool DefaultFlyingRobot::Initialize() {
   return true;
 }
 
-void DefaultFlyingRobot::Execute(double t, double dt) {
+void DefaultQuadrotor::Execute(double t, double dt) {
   double dx = goal_x_ - x();
   double dy = goal_y_ - y();
   double dz = goal_z_ - z();
@@ -36,8 +36,8 @@ void DefaultFlyingRobot::Execute(double t, double dt) {
   SetGoal(goal_x_, goal_y_, goal_z_);
 }
 
-void DefaultFlyingRobot::Draw(VisualizerWindow* window) {
-  FlyingRobot::Draw(window);
+void DefaultQuadrotor::Draw(VisualizerWindow* window) {
+  Quadrotor::Draw(window);
 
   glPushMatrix();
   glTranslatef(goal_x_, goal_z_, -goal_y_);

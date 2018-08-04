@@ -1,13 +1,13 @@
-#ifndef _DEFAULT_GROUND_ROBOT_H
-#define _DEFAULT_GROUND_ROBOT_H
+#ifndef _DEFAULT_QUADROTOR_H
+#define _DEFAULT_QUADROTOR_H
 
-#include "core/ground_robot.h"
+#include "core/quadrotor.h"
 #include "core/robot.h"
 #include "display/window.h"
 #include "util/registerer.h"
 
-class DefaultGroundRobot : public GroundRobot {
-  REGISTER("DefaultGroundRobot", Robot);
+class DefaultQuadrotor : public Quadrotor {
+  REGISTER("DefaultQuadrotor", Robot);
 
  public:
   void Draw(VisualizerWindow* window) override;
@@ -19,6 +19,7 @@ class DefaultGroundRobot : public GroundRobot {
 
   double goal_x_;
   double goal_y_;
+  double goal_z_;
 };
 
 #endif
