@@ -1,8 +1,6 @@
 #include "python_supervisor.h"
 #include "python_unicycle.h"
 
-#include <Python.h>
-
 #include <iostream>
 #include <sstream>
 
@@ -13,14 +11,51 @@ DECLARE_int32(nthreads);
 DEFINE_string(python_supervisor_arg, "", "String argument passed to the start() method.");
 DEFINE_string(python_supervisor_script, "", "Python script filename.");
 
-namespace {
-// Control constants.
-constexpr double kArenaSize = 3.0;
-}  // namespace
+
+// Helper functions to display information using OpenGL.
+// Some functions are already available from the PyOpenGL package.
+static PyObject* swarmui_glColor3f(PyObject* self, PyObject* args) {
+  double r, g, b;
+  if (!PyArg_ParseTuple(args, "ddd", &r, &g, &b))
+    return nullptr;
+  glColor3f(r, g, b);
+  Py_RETURN_NONE;
+}
+
+static PyObject* swarmui_glBegin(PyObject* self, PyObject* args) {
+  int v;
+  if (!PyArg_ParseTuple(args, "i", &v))
+    return nullptr;
+  glBegin(v);
+  Py_RETURN_NONE;
+}
+
+static PyObject* swarmui_glEnd(PyObject* self, PyObject* args) {
+  glEnd();
+  Py_RETURN_NONE;
+}
+
+static PyObject* swarmui_glLineWidth(PyObject* self, PyObject* args) {
+  double v;
+  if (!PyArg_ParseTuple(args, "d", &v))
+    return nullptr;
+  glLineWidth(v);
+  Py_RETURN_NONE;
+}
+
+static PyMethodDef kSwarmuiMethods[] = {
+    {"glColor3f", swarmui_glColor3f, METH_VARARGS, "glColor3f"},
+    {"glLineWidth", swarmui_glLineWidth, METH_VARARGS, "glLineWidth"},
+    {"glBegin", swarmui_glBegin, METH_VARARGS, "glBegin"},
+    {"glEnd", swarmui_glEnd, METH_VARARGS, "glEnd"},
+    {NULL, NULL, 0, NULL}
+};
+
 
 bool PythonSupervisor::Initialize() {
   FLAGS_nthreads = 1;  // Because of the GIL.
   Py_Initialize();
+  Py_InitModule("swarmui", kSwarmuiMethods);
 
   if (FLAGS_python_supervisor_script.empty()) {
     std::cerr << "Python script driving the robots must be set with --python_supervisor_script" << std::endl;
@@ -39,29 +74,23 @@ bool PythonSupervisor::Initialize() {
     return false;
   }
 
-  PyObject* start_function = PyObject_GetAttrString(module, "start");
-  if (!start_function) {
-    std::cerr << "Unable to find \"start\" function" << std::endl;
+  // Get supervisor.
+  PyObject* supervisor_class = PyObject_GetAttrString(module, "Supervisor");
+  if (!supervisor_class) {
+    std::cerr << "Unable to find \"Supervior\" class" << std::endl;
     return false;
   }
-  PyObject* start_arg = PyString_FromString(FLAGS_python_supervisor_arg.c_str());
-  if (!start_arg) {
+  instance_ = PyObject_CallObject(supervisor_class, nullptr);
+  if (!instance_) {
+    std::cerr << "Unable to call \"Supervior.__init__()\" class" << std::endl;
     PyErr_Print();
     return false;
   }
-  PyObject* args = PyTuple_Pack(1, start_arg);
-  if (!args) {
-    PyErr_Print();
-    return false;
-  }
-  Py_DECREF(start_arg);
-  PyObject* robot_list = PyObject_CallObject(start_function, args);
+  PyObject* robot_list = PyObject_CallMethod(instance_, "initialize", "(s)", FLAGS_python_supervisor_arg.c_str());
   if (!robot_list) {
     PyErr_Print();
     return false;
   }
-  Py_DECREF(args);
-  Py_XDECREF(start_function);
 
   // Go through the robot list.
   const int n = PyList_Size(robot_list);
@@ -123,6 +152,57 @@ bool PythonSupervisor::Initialize() {
   return true;
 }
 
+void PythonSupervisor::Update(double t, double dt) {
+  PyObject* result = PyObject_CallMethod(instance_, "execute", "(ff)", t, dt);
+  if (!result) {
+    std::cerr << "Unable to call \"Supervisor.execute()\"" << std::endl;
+    PyErr_Print();
+    return;
+  }
+  Py_DECREF(result);
+
+  // The supervisor may have changed the positions of robots.
+  for (int i = 0; i < NumRobots(); ++i) {
+    Robot* robot = GetMutableRobot(i);
+    PyObject* instance = robot->python_instance();
+    PyObject* x = PyObject_GetAttrString(instance, "x");
+    PyObject* y = PyObject_GetAttrString(instance, "y");
+    PyObject* z = PyObject_GetAttrString(instance, "z");
+    PyObject* yaw = PyObject_GetAttrString(instance, "yaw");
+    PyObject* pitch = PyObject_GetAttrString(instance, "pitch");
+    PyObject* roll = PyObject_GetAttrString(instance, "roll");
+    if (!(x && y && z && yaw && pitch && roll)) {
+      PyErr_Print();
+      return;
+    }
+    robot->SetPosition(PyFloat_AsDouble(x),
+                       PyFloat_AsDouble(y),
+                       PyFloat_AsDouble(z),
+                       PyFloat_AsDouble(roll),
+                       PyFloat_AsDouble(pitch),
+                       PyFloat_AsDouble(yaw));
+    Py_DECREF(x);
+    Py_DECREF(y);
+    Py_DECREF(z);
+    Py_DECREF(yaw);
+    Py_DECREF(pitch);
+    Py_DECREF(roll);
+  }
+}
+
 void PythonSupervisor::Destroy() {
+  for (int i = 0; i < NumRobots(); ++i) {
+    GetMutableRobot(i)->ClosePython();
+  }
   Py_Finalize();
+}
+
+void PythonSupervisor::Draw(double t, VisualizerWindow* window) {
+  PyObject* result = PyObject_CallMethod(instance_, "draw", "(f)", t);
+  if (!result) {
+    std::cerr << "Unable to call \"Supervisor.draw()\"" << std::endl;
+    PyErr_Print();
+    return;
+  }
+  Py_DECREF(result);
 }

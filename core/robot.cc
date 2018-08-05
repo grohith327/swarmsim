@@ -104,3 +104,17 @@ PyObject* Robot::ExecutePython(double t, double dt) {
   }
   return result;
 }
+
+void Robot::ClosePython() {
+  if (!python_instance_) {
+    std::cerr << "SetPythonInstance() not called" << std::endl;
+    return;
+  }
+  PyObject* result = PyObject_CallMethod(python_instance_, "close", nullptr);
+  if (!result) {
+    std::cerr << "Unable to call \"Robot.close()\"" << std::endl;
+    PyErr_Print();
+    return;
+  }
+  return;
+}

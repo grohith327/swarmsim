@@ -52,9 +52,11 @@ class Robot {
   void SetPythonInstance(PyObject* instance);
   PyObject* python_instance() const;
   PyObject* ExecutePython(double t, double dt);
+  void ClosePython();
 
  private:
   friend class Unicycle;
+  friend class Bicycle;
   friend class Quadrotor;
 
   // Private function to initialize the robots.
