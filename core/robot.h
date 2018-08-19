@@ -58,6 +58,7 @@ class Robot {
   friend class Unicycle;
   friend class Bicycle;
   friend class Quadrotor;
+  friend class PythonQuadrotor;
 
   // Private function to initialize the robots.
   virtual bool Initialize() = 0;

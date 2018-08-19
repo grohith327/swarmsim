@@ -30,6 +30,16 @@ class Quadrotor : public Robot {
   // Sets the goal position if GoalBased returns true.
   void SetGoal(double x, double y, double z);
 
+ protected:
+  // Internal state.
+  double xdot_;
+  double ydot_;
+  double zdot_;
+  double rolldot_;
+  double pitchdot_;
+  double yawdot_;
+
+
  private:
   void ComputeDesiredRPM();
 
@@ -50,13 +60,7 @@ class Quadrotor : public Robot {
   double goal_y_;
   double goal_z_;
 
-  // Internal state.
-  double xdot_;
-  double ydot_;
-  double zdot_;
-  double rolldot_;
-  double pitchdot_;
-  double yawdot_;
+  // Additional internal state.
   double I_[3];
   double w1_;
   double w2_;

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <string>
 
 #include "gflags/gflags.h"
 #include "util/utils.h"
@@ -51,6 +52,13 @@ static PyMethodDef kSwarmuiMethods[] = {
     {NULL, NULL, 0, NULL}
 };
 
+namespace {
+static std::string GetDirectory(const std::string& filename) {
+  size_t found;
+  found = filename.find_last_of("/\\");
+  return filename.substr(0, found);
+}
+}
 
 bool PythonSupervisor::Initialize() {
   FLAGS_nthreads = 1;  // Because of the GIL.
@@ -65,7 +73,9 @@ bool PythonSupervisor::Initialize() {
   std::ostringstream buffer;
   buffer << "import imp\n"
          << "imp.load_source('swarmsim', r'./plugin/swarmsim.py')\n"
-         << "imp.load_source('robot', r'" << FLAGS_python_supervisor_script << "')";
+         << "import sys\n"
+         << "sys.path.insert(0, '" << GetDirectory(FLAGS_python_supervisor_script) << "')\n"
+         << "imp.load_source('robot', r'" << FLAGS_python_supervisor_script << "')\n";
   PyRun_SimpleString(buffer.str().c_str());
 
   PyObject* module = PyImport_ImportModule("robot");
