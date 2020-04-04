@@ -24,7 +24,8 @@ endif
 
 HAS_CLANG := $(shell command -v clang++ 2> /dev/null)
 ifdef HAS_CLANG
-  CC = clang++ -std=c++11 -stdlib=libc++
+  CC = g++ -std=c++11
+#   CC = clang++ -std=c++11 -stdlib=libc++
 else
   CC = g++ -std=c++11
 endif

@@ -19,17 +19,42 @@ constexpr double kArenaSize = 3.0;
 constexpr double kCameraDuration = 5.0;
 }  // namespace
 
+// bool DefaultSupervisor::Initialize() {
+//   for (int i = 0; i < FLAGS_default_supervisor_nrobots; ++i) {
+//     Robot* robot;
+//     if (i % 2 == 0) {
+//       robot = CreateRobot("DefaultGroundRobot");
+//       // Random positions.
+//       robot->SetPosition(RandomUniform() * kArenaSize - kArenaSize / 2.0,
+//                          RandomUniform() * kArenaSize - kArenaSize / 2.0,
+//                          RandomUniform() * M_PI * 2.0);
+//     } else  {
+//       robot = CreateRobot("DefaultFlyingRobot");
+//       // Random positions.
+//       robot->SetPosition(RandomUniform() * kArenaSize - kArenaSize / 2.0,
+//                          RandomUniform() * kArenaSize - kArenaSize / 2.0,
+//                          RandomUniform() * kArenaSize / 2.0,
+//                          0.0,
+//                          0.0,
+//                          RandomUniform() * M_PI * 2.0);
+//     }
+//     // Assign type. Robots of different types appear in different colors.
+//     robot->SetType(i);
+//   }
+//   return true;
+// }
+
 bool DefaultSupervisor::Initialize() {
   for (int i = 0; i < FLAGS_default_supervisor_nrobots; ++i) {
     Robot* robot;
     if (i % 2 == 0) {
-      robot = CreateRobot("DefaultGroundRobot");
+      robot = CreateRobot("DefaultQuadrotor");
       // Random positions.
       robot->SetPosition(RandomUniform() * kArenaSize - kArenaSize / 2.0,
                          RandomUniform() * kArenaSize - kArenaSize / 2.0,
                          RandomUniform() * M_PI * 2.0);
     } else  {
-      robot = CreateRobot("DefaultFlyingRobot");
+      robot = CreateRobot("DefaultQuadrotor");
       // Random positions.
       robot->SetPosition(RandomUniform() * kArenaSize - kArenaSize / 2.0,
                          RandomUniform() * kArenaSize - kArenaSize / 2.0,
