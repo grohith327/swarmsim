@@ -24,6 +24,7 @@ float NormalizeAngle(float a) {
 
 double RandomUniform() {
   return (double)rand()/(double)RAND_MAX;
+  // retur  n (double)0.5;
 }
 
 double RandomNormal() {

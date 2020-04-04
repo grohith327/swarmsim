@@ -6,27 +6,66 @@
 #include "util/utils.h"
 
 namespace {
-constexpr double kDistanceThreshold = 0.2;
+constexpr double kDistanceThreshold = 0.15;
 constexpr double kGoalRadius = 0.05;
 }  // namespace
 
+DefaultQuadrotor::DefaultQuadrotor()
+{
+  count = 0;
+  int pos = 0;
+  for(double i = -2.0; i <= 2.0; i+=0.4)
+  {
+    for(double j = 2.0; j>=-2.0; j -=0.4)
+    {
+      positions[pos][0] = i;
+      positions[pos][1] = j;
+      pos++;
+    }
+  }
+
+  // for(int i=0;i<121;i++)
+  // {
+  //   std::cout<<positions[i][0]<<" "<<positions[i][1]<<std::endl;
+  // }
+}
+
 bool DefaultQuadrotor::Initialize() {
   // Pick a random goal point .
-  goal_x_ = RandomUniform() * 3.0 - 1.5;
-  goal_y_ = RandomUniform() * 3.0 - 1.5;
-  goal_z_ = RandomUniform() * 1.0 + 1.0;
+  // goal_x_1 = RandomUniform() * 4.0 - 1.5;
+  // goal_y_1 = RandomUniform() * 4.0 - 1.5;
+  // goal_z_1 = RandomUniform() * 1.0 + 1.0;
+  goal_x_ = positions[count][0];
+  goal_y_ = positions[count][1];
+  goal_z_ = 1.5;
+  count++;
   return true;
 }
 
 void DefaultQuadrotor::Execute(double t, double dt) {
+
+  std::cout<<"X:"<<goal_x_<<" Y:"<<goal_y_<<" Z:"<<goal_z_<<std::endl;
+  
   double dx = goal_x_ - x();
   double dy = goal_y_ - y();
   double dz = goal_z_ - z();
   double e = sqrtf(dx * dx + dy * dy + dz * dz);
+
   while (e < kDistanceThreshold) {
-    goal_x_ = RandomUniform() * 3.0 - 1.5;
-    goal_y_ = RandomUniform() * 3.0 - 1.5;
-    goal_z_ = RandomUniform() * 1.0 + 1.0;
+
+    // std::cout<<"Execute "<<count<<std::endl;
+    // count++;
+    // goal_x_1 = RandomUniform() * 4.0 - 1.5;
+    // goal_y_1 = RandomUniform() * 4.0 - 1.5;
+    // goal_z_1 = RandomUniform() * 1.0 + 1.0;
+    goal_x_ = positions[count][0];
+    goal_y_ = positions[count][1];
+    goal_z_ = 1.5;
+    count++;
+    if(count == 121)
+    {
+      count = 0;
+    }
     dx = goal_x_ - x();
     dy = goal_y_ - y();
     dz = goal_z_ - z();
@@ -41,6 +80,7 @@ void DefaultQuadrotor::Draw(VisualizerWindow* window) {
 
   glPushMatrix();
   glTranslatef(goal_x_, goal_z_, -goal_y_);
+  // glTranslatef(goal_x_2, goal_z_2, -goal_y_2);
   auto robot_color = color();
   glColor4f(std::get<0>(robot_color) * 0.5, std::get<1>(robot_color) * 0.5, std::get<2>(robot_color) * 0.5, 0.6f);
   glutWireSphere(kGoalRadius, 8, 8);

@@ -11,11 +11,11 @@
 #include "gflags/gflags.h"
 #include "util/utils.h"
 
-DEFINE_int32(default_supervisor_nrobots, 4, "Number of robots to initialize.");
+DEFINE_int32(default_supervisor_nrobots, 1, "Number of robots to initialize.");
 
 namespace {
 // Control constants.
-constexpr double kArenaSize = 3.0;
+constexpr double kArenaSize = 4.0;
 constexpr double kCameraDuration = 5.0;
 }  // namespace
 
