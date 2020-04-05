@@ -61,8 +61,8 @@ class Robot {
   friend class PythonQuadrotor;
 
   // Private function to initialize the robots.
-  virtual bool Initialize() = 0;
-  virtual void Execute(double t, double dt) = 0;
+  virtual bool Initialize(int robot_type) = 0;
+  virtual void Execute(double t, double dt, int robot_type) = 0;
 
   // Determines whether a derived class uses the goal-based control or
   // controls the velocities directly. Default is to provide control

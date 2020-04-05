@@ -2,6 +2,8 @@
 #define _DEFAULT_QUADROTOR_H
 
 #include <iostream>
+#include <vector>
+
 #include "core/quadrotor.h"
 #include "core/robot.h"
 #include "display/window.h"
@@ -14,12 +16,12 @@ class DefaultQuadrotor : public Quadrotor {
   DefaultQuadrotor();
   void Draw(VisualizerWindow* window) override;
 
-  double positions[121][2];
+  std::vector<std::vector<int>> positions;
   int count;
 
  private:
-  bool Initialize() override;
-  void Execute(double t, double dt) override;
+  bool Initialize(int robot_type) override;
+  void Execute(double t, double dt, int robot_type) override;
   bool GoalBased() override { return true; }
 
   double goal_x_;

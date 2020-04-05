@@ -10,6 +10,7 @@ class DefaultSupervisor : public Supervisor {
  private:
   bool Initialize() override;
   void Draw(double t, VisualizerWindow* window) override;
+  // void Update(double t, double dt) override;
 };
 
 #endif

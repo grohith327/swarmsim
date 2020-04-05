@@ -6,11 +6,11 @@ Robot::Robot()
     : x_(0.0), y_(0.0), z_(0.0), yaw_(0.0), roll_(0.0), pitch_(0.0), type_(0), python_instance_(nullptr) {}
 
 bool Robot::Init() {
-  return Initialize();
+  return Initialize(type());
 }
 
 void Robot::Step(double t, double dt) {
-  Execute(t, dt);
+  Execute(t, dt, type());
 }
 
 void Robot::SetPosition(double x, double y, double yaw) {

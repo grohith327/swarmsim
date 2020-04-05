@@ -22,6 +22,12 @@ bool Supervisor::Init() {
     std::cerr << "No robots were created by \"" << FLAGS_supervisor << "\"." << std::endl;
   }
 
+  // for (auto it = robots_.begin(); it != robots_.end(); ++it)
+  // {
+  //   Robot* robot = it->get();
+  //   std::cout<<"Robot type:"<<robot->type()<<std::endl;
+  // }
+
   // Nearest neighbors.
   robot_points_ = annAllocPts(robots_.size(), 2);
 

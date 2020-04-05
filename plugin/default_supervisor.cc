@@ -50,18 +50,30 @@ bool DefaultSupervisor::Initialize() {
     if (i % 2 == 0) {
       robot = CreateRobot("DefaultQuadrotor");
       // Random positions.
-      robot->SetPosition(RandomUniform() * kArenaSize - kArenaSize / 2.0,
-                         RandomUniform() * kArenaSize - kArenaSize / 2.0,
+      // robot->SetPosition(RandomUniform() * kArenaSize - kArenaSize / 2.0,
+      //                    RandomUniform() * kArenaSize - kArenaSize / 2.0,
+      //                    RandomUniform() * M_PI * 2.0);
+      robot->SetPosition(0.0,
+                         0.0,
                          RandomUniform() * M_PI * 2.0);
+      
     } else  {
       robot = CreateRobot("DefaultQuadrotor");
       // Random positions.
-      robot->SetPosition(RandomUniform() * kArenaSize - kArenaSize / 2.0,
-                         RandomUniform() * kArenaSize - kArenaSize / 2.0,
-                         RandomUniform() * kArenaSize / 2.0,
+      // robot->SetPosition(RandomUniform() * kArenaSize - kArenaSize / 2.0,
+      //                    RandomUniform() * kArenaSize - kArenaSize / 2.0,
+      //                    RandomUniform() * kArenaSize / 2.0,
+      //                    0.0,
+      //                    0.0,
+      //                    RandomUniform() * M_PI * 2.0);
+
+      robot->SetPosition(0.0,
+                         2.0,
+                         0.0,
                          0.0,
                          0.0,
                          RandomUniform() * M_PI * 2.0);
+      // std::cout<<"Robot Type: "<<robot2->type()<<std::endl;
     }
     // Assign type. Robots of different types appear in different colors.
     robot->SetType(i);
@@ -80,3 +92,8 @@ void DefaultSupervisor::Draw(double t, VisualizerWindow* window) {
   glVertex3f(kArenaSize / 2.0, -0.01, -kArenaSize / 2.0);
   glEnd();
 }
+
+// void DefaultSupervisor::Update(double t, double dt)
+// {
+  
+// }
